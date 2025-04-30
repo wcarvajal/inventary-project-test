@@ -92,16 +92,16 @@ jobs:
         sed -i 's/PRODUCTS_SERVICE_URL=.*/PRODUCTS_SERVICE_URL=http:\/\/localhost:8001/' inventory-service/.env
 
     - name: Install Dependencies
-      working-directory: ./inventory-service
+      working-directory: ./inventory-service/app/
       run: |
         composer install --prefer-dist --no-interaction
 
     - name: Run Migrations
-      working-directory: ./inventory-service
+      working-directory: ./inventory-service/app/
       run: |
         php artisan migrate --force
 
     - name: Execute Tests
-      working-directory: ./inventory-service
+      working-directory: ./inventory-service/app/
       run: |
         php artisan test --coverage --min=80
