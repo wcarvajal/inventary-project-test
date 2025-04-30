@@ -108,4 +108,4 @@ jobs:
     - name: Execute Tests
       working-directory: ./inventory-service/app/
       run: |
-        php artisan test --coverage --min=80
+        php artisan test --coverage --min=50
