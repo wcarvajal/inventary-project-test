@@ -45,17 +45,17 @@ jobs:
         sed -i 's/DB_DATABASE=.*/DB_DATABASE=products/' products-service/.env
 
     - name: Install Dependencies
-      working-directory: ./products-service
+      working-directory: ./products-service/app/
       run: |
         composer install --prefer-dist --no-interaction
 
     - name: Run Migrations
-      working-directory: ./products-service
+      working-directory: ./products-service/app/
       run: |
         php artisan migrate --force
 
     - name: Execute Tests
-      working-directory: ./products-service
+      working-directory: ./products-service/app/
       run: |
         php artisan test --coverage --min=80
 
