@@ -1,5 +1,6 @@
 {
     "require": {
-        "cloudcreativity/laravel-json-api": "^7.2"
+        "cloudcreativity/laravel-json-api": "^7.2",
+        "darkaonline/l5-swagger": "^9.0"
     }
 }
