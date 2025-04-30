@@ -10,6 +10,6 @@ class Product extends Model
     
     public function inventory()
     {
-        return $this->hasOne('App\Models\Inventory');
+        return $this->hasOne(\App\Models\Inventory::class);
     }
 }

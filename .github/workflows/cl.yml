@@ -1,0 +1,52 @@
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on: [push]  # Se ejecuta en cada push al repositorio
+
+jobs:
+  test-services:
+    name: Run Tests
+    runs-on: ubuntu-latest  # Máquina virtual donde se ejecutará
+    
+    services:  # Base de datos para testing
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      matrix:
+        service: ['productos', 'inventario']  # Ejecuta para ambos servicios
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4  # Descarga el código
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'  # Versión de PHP
+        extensions: mbstring, zip, mysql, xml  # Extensiones necesarias
+        coverage: pcov  # Para generar cobertura de tests
+    
+    - name: Install Dependencies
+      run: |
+        cd ${{ matrix.service }}-service  # Entra al directorio del servicio
+        composer install --prefer-dist --no-interaction
+    
+    - name: Run Tests
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: testing
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+      run: |
+        cd ${{ matrix.service }}-service
+        php artisan migrate --env=testing
+        php artisan test --coverage --min=80  # Ejecuta tests con cobertura mínima del 80%

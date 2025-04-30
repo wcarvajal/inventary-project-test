@@ -11,7 +11,10 @@ class Inventory extends Model
     protected static function booted()
     {
         static::updated(function ($inventory) {
-            event(new InventoryUpdated($inventory));
+            logger()->info('Inventory Updated:', [
+                'product_id' => $inventory->product_id,
+                'new_amount' => $inventory->amount
+            ]);
         });
     }
 }
