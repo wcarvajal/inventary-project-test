@@ -1,0 +1,5 @@
+{
+    "require": {
+        "cloudcreativity/laravel-json-api": "^7.2"
+    }
+}
