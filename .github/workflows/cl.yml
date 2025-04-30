@@ -44,7 +44,7 @@ jobs:
         sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' products-service/app/.env
         sed -i 's/DB_DATABASE=.*/DB_DATABASE=products/' products-service/app/.env
         # Generar APP_KEY
-        echo "APP_KEY=base64:$(openssl rand -base64 32)" >> products-service/.env
+        echo "APP_KEY=base64:$(openssl rand -base64 32)" >> products-service/app/.env
 
     - name: Install Dependencies
       working-directory: ./products-service/app/
@@ -92,8 +92,8 @@ jobs:
         sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' inventory-service/app/.env
         sed -i 's/DB_DATABASE=.*/DB_DATABASE=inventory/' inventory-service/app/.env
         sed -i 's/PRODUCTS_SERVICE_URL=.*/PRODUCTS_SERVICE_URL=http:\/\/localhost:8001/' inventory-service/app/.env
-        echo "APP_KEY=base64:$(openssl rand -base64 32)" >> inventory-service/.env
-        sed -i 's/PRODUCTS_SERVICE_URL=.*/PRODUCTS_SERVICE_URL=http:\/\/localhost:8001/' inventory-service/.env
+        echo "APP_KEY=base64:$(openssl rand -base64 32)" >> inventory-service/app/.env
+        sed -i 's/PRODUCTS_SERVICE_URL=.*/PRODUCTS_SERVICE_URL=http:\/\/localhost:8001/' inventory-service/app/.env
 
     - name: Install Dependencies
       working-directory: ./inventory-service/app/
