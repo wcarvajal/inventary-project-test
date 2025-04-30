@@ -1,53 +1,38 @@
-version: '4.31.1'
-
 services:
   products:
     build:
       context: ./products-service
       dockerfile: docker/php/Dockerfile
-    ports:
-      - "8001:80"
+    container_name: products-service
     volumes:
-      - ./products-service:/var/www/html
+      - ./products-service/app/:/var/www/html
     environment:
-      APP_ENV: production
-      DB_HOST: localhost
-      SERVICE_API_KEY: secret-products-key
+      - DB_HOST=host.docker.internal  # Conexión al WAMP local
+      - DB_DATABASE=products
+      - DB_USERNAME=root
+      - DB_PASSWORD=
     networks:
       - backend
+    ports:
+      - "8001:80"
 
   inventory:
     build:
       context: ./inventory-service
       dockerfile: docker/php/Dockerfile
+    container_name: inventory-service
+    volumes:
+      - ./inventory-service/app/:/var/www/html
+    environment:
+      - DB_HOST=host.docker.internal  # Conexión al WAMP local
+      - DB_DATABASE=inventory
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+      - PRODUCTS_SERVICE_URL=http://products:8001
+    networks:
+      - backend
     ports:
       - "8002:80"
-    environment:
-      APP_ENV: production
-      PRODUCTS_SERVICE_URL: http://products
-      PRODUCTS_API_KEY: secret-products-key
-    networks:
-      - backend
-
-  db_products:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: products
-      MYSQL_USER: user
-      MYSQL_PASSWORD: secret
-    networks:
-      - backend
-
-  db_inventory:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: inventory
-      MYSQL_USER: user
-      MYSQL_PASSWORD: secret
-    networks:
-      - backend
 
 networks:
   backend:
