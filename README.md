@@ -1,21 +1,6 @@
 # Microservicios de Productos e Inventario
 
-[![CI/CD](https://github.com/tu-usuario/tu-repositorio/actions/workflows/ci.yml/badge.svg)](https://github.com/tu-usuario/tu-repositorio/actions)
-
 Sistema de microservicios independientes para gestión de productos e inventario, implementado con Laravel y Docker.
-
-## Arquitectura
-
-```mermaid
-graph TD
-    A[Cliente] --> B[Servicio Productos]
-    A --> C[Servicio Inventario]
-    B --> D[(MySQL Products)]
-    C --> E[(MySQL Inventory)]
-    C -->|HTTP JSON API| B
-    B -->|Eventos| F[Logs]
-    C -->|Eventos| F
-
 
 ## Requisitos Previos
     -Docker 20.10+
